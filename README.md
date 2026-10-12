@@ -2,7 +2,7 @@
 
 A web app for students to organise study notes by subject. Write notes, attach lecture PDFs, and find anything quickly with search and filters. Every user has a private space: you can only ever see and edit your own subjects, notes and files.
 
-**Live demo:** _add your Render URL here_
+![Dashboard](docs/dashboard.png)
 
 ---
 
@@ -36,15 +36,17 @@ A web app for students to organise study notes by subject. Write notes, attach l
 
 ## Screenshots
 
-> _Placeholder: add your own screenshots to a `docs/` folder and update the paths below._
+**Search notes by title and content, combined with a subject filter**
 
-| Dashboard | Notes with search |
-|---|---|
-| ![Dashboard](docs/dashboard.png) | ![Notes list](docs/notes.png) |
+![Notes search](docs/notes.png)
 
-| Note with PDF | Mobile + dark mode |
-|---|---|
-| ![Note detail](docs/note-detail.png) | ![Mobile](docs/mobile.png) |
+**Subjects, each with its own note count**
+
+![Subjects](docs/subjects.png)
+
+**Responsive on phones, with automatic dark mode**
+
+![Mobile and dark mode](docs/mobile.png)
 
 ## Running it locally
 
@@ -52,7 +54,7 @@ A web app for students to organise study notes by subject. Write notes, attach l
 
 ```bash
 # 1. Get the code
-git clone https://github.com/<your-username>/study_notes_hub.git
+git clone https://github.com/Suhani0108/study_notes_hub.git
 cd study_notes_hub
 
 # 2. Create and activate a virtual environment
@@ -114,9 +116,6 @@ accounts/          Sign-up view and login/signup forms
 notes/             Models, views, forms, signals, tests and templates for subjects and notes
 templates/         Base layout, auth pages and reusable partials
 static/css/        Custom styles on top of Bootstrap
+docs/              README screenshots
 build.sh           Render build script
 ```
-
-## What I learned
-
-_Placeholder: a few sentences about what you learned building this (class-based views, permissions, file uploads, deployment…). Recruiters love this section._
