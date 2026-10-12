@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% comment %}Used by both SubjectCreateView and SubjectUpdateView.
+"object" only exists when editing, so we use it to pick the wording.{% endcomment %}
+
+{% block title %}{% if object %}Edit subject{% else %}New subject{% endif %} · Study Notes Hub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-4">
+                    {% if object %}<i class="bi bi-pencil me-2"></i>Edit “{{ object.name }}”
+                    {% else %}<i class="bi bi-folder-plus me-2"></i>New subject{% endif %}
+                </h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% include 'partials/form_fields.html' %}
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">{% if object %}Save changes{% else %}Create subject{% endif %}</button>
+                        <a href="{% if object %}{{ object.get_absolute_url }}{% else %}{% url 'subject_list' %}{% endif %}"
+                           class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

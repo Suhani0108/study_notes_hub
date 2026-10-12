@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up · Study Notes Hub{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="text-center mb-4">
+        <span class="icon-badge mb-3"><i class="bi bi-person-plus"></i></span>
+        <h1 class="h3">Create your account</h1>
+        <p class="text-body-secondary">Organise your notes and PDFs by subject.</p>
+    </div>
+    <div class="card">
+        <div class="card-body p-4">
+            <form method="post">
+                {% csrf_token %}
+                {% include 'partials/form_fields.html' %}
+                <button type="submit" class="btn btn-primary w-100">Sign up</button>
+            </form>
+        </div>
+    </div>
+    <p class="text-center mt-3 text-body-secondary">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+</div>
+{% endblock %}

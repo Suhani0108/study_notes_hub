@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ note.title }} · Study Notes Hub{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'subject_list' %}">Subjects</a></li>
+        <li class="breadcrumb-item"><a href="{{ note.subject.get_absolute_url }}">{{ note.subject.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ note.title }}</li>
+    </ol>
+</nav>
+
+<div class="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
+    <div>
+        <h1 class="h3 mb-1">{{ note.title }}</h1>
+        <small class="text-body-secondary">
+            <i class="bi bi-calendar3 me-1"></i>Created {{ note.created_at|date:"j M Y, H:i" }}
+            <span class="mx-1">·</span>
+            <i class="bi bi-clock-history me-1"></i>Updated {{ note.updated_at|naturaltime }}
+        </small>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{% url 'note_update' note.pk %}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-pencil me-1"></i>Edit</a>
+        <a href="{% url 'note_delete' note.pk %}" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>Delete</a>
+    </div>
+</div>
+
+{% if note.content %}
+    <div class="card mb-4">
+        <!-- linebreaks turns the text's line breaks into paragraphs (and escapes HTML) -->
+        <div class="card-body p-4 note-content">{{ note.content|linebreaks }}</div>
+    </div>
+{% endif %}
+
+{% if note.file %}
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="h5 mb-0"><i class="bi bi-file-earmark-pdf text-danger me-1"></i>Attached PDF</h2>
+        <a href="{% url 'note_file' note.pk %}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-box-arrow-up-right me-1"></i>Open in new tab
+        </a>
+    </div>
+    <iframe src="{% url 'note_file' note.pk %}" title="{{ note.title }} PDF" class="pdf-frame shadow-sm"></iframe>
+{% endif %}
+
+{% if not note.content and not note.file %}
+    <div class="card empty-state">
+        <i class="bi bi-pencil-square"></i>
+        <p class="mb-2">This note is empty.</p>
+        <div><a href="{% url 'note_update' note.pk %}" class="btn btn-primary btn-sm">Add some content</a></div>
+    </div>
+{% endif %}
+{% endblock %}

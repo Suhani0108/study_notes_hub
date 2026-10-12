@@ -1,0 +1,36 @@
+{% comment %}
+    Page links for any paginated ListView.
+    {% querystring %} (Django 5.1+) keeps the other URL parameters,
+    like ?q=...&subject=3, when changing page.
+{% endcomment %}
+
+{% if page_obj.has_other_pages %}
+<nav class="mt-4" aria-label="Pages">
+    <ul class="pagination justify-content-center flex-wrap">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="{% querystring page=page_obj.previous_page_number %}" aria-label="Previous">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+        {% endif %}
+
+        {% for number in page_obj.paginator.page_range %}
+            {% if number == page_obj.number %}
+                <li class="page-item active" aria-current="page"><span class="page-link">{{ number }}</span></li>
+            {% elif number > page_obj.number|add:'-3' and number < page_obj.number|add:'3' %}
+                {# Only show pages close to the current one #}
+                <li class="page-item"><a class="page-link" href="{% querystring page=number %}">{{ number }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="{% querystring page=page_obj.next_page_number %}" aria-label="Next">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

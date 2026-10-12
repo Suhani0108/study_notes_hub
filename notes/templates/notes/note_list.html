@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Notes · Study Notes Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <h1 class="h3 mb-0">Your notes</h1>
+    <a href="{% url 'note_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>New note</a>
+</div>
+
+<!-- Search + filter. A GET form puts ?q=...&subject=... in the URL,
+     so results can be bookmarked and pagination keeps them. -->
+<form method="get" class="card card-body mb-4" role="search">
+    <div class="row g-2">
+        <div class="col-md">
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="search" name="q" value="{{ query }}" class="form-control"
+                       placeholder="Search titles and content…" aria-label="Search notes">
+            </div>
+        </div>
+        <div class="col-sm col-md-4 col-lg-3">
+            <select name="subject" class="form-select" aria-label="Filter by subject">
+                <option value="">All subjects</option>
+                {% for subject in subjects %}
+                    <option value="{{ subject.pk }}" {% if selected_subject == subject.pk|stringformat:"d" %}selected{% endif %}>{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+            {% if is_filtered %}
+                <a href="{% url 'note_list' %}" class="btn btn-outline-secondary">Clear</a>
+            {% endif %}
+        </div>
+    </div>
+</form>
+
+{% if is_filtered %}
+    <p class="text-body-secondary small mb-2">
+        {{ paginator.count }} note{{ paginator.count|pluralize }} found{% if query %} for “<strong>{{ query }}</strong>”{% endif %}
+    </p>
+{% endif %}
+
+{% if note_list %}
+    <div class="list-group shadow-sm">
+        {% for note in note_list %}
+            <a href="{{ note.get_absolute_url }}" class="list-group-item list-group-item-action py-3">
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                    <div class="fw-semibold">
+                        {{ note.title }}
+                        {% if note.file %}<i class="bi bi-file-earmark-pdf text-danger ms-1" title="Has a PDF"></i>{% endif %}
+                    </div>
+                    <small class="text-body-secondary text-nowrap">{{ note.updated_at|naturaltime }}</small>
+                </div>
+                <span class="badge badge-subject rounded-pill my-1">{{ note.subject.name }}</span>
+                {% if note.content %}
+                    <div class="small text-body-secondary">{{ note.content|truncatewords:25 }}</div>
+                {% endif %}
+            </a>
+        {% endfor %}
+    </div>
+{% elif is_filtered %}
+    <div class="card empty-state">
+        <i class="bi bi-search"></i>
+        <p class="mb-2">No notes match your search.</p>
+        <div><a href="{% url 'note_list' %}" class="btn btn-outline-secondary btn-sm">Show all notes</a></div>
+    </div>
+{% else %}
+    <div class="card empty-state">
+        <i class="bi bi-journal-plus"></i>
+        <p class="mb-2">You haven't written any notes yet.</p>
+        <div><a href="{% url 'note_create' %}" class="btn btn-primary btn-sm">Write your first note</a></div>
+    </div>
+{% endif %}
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

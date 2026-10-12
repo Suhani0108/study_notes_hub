@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Subjects · Study Notes Hub{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <h1 class="h3 mb-0">Your subjects</h1>
+    <a href="{% url 'subject_create' %}" class="btn btn-primary"><i class="bi bi-folder-plus me-1"></i>New subject</a>
+</div>
+
+{% if subject_list %}
+    <div class="row g-3">
+        {% for subject in subject_list %}
+            <div class="col-sm-6 col-lg-4">
+                <div class="card card-hover h-100">
+                    <div class="card-body d-flex gap-3">
+                        <span class="icon-badge"><i class="bi bi-folder2"></i></span>
+                        <div class="min-w-0">
+                            <h2 class="h5 card-title mb-1">
+                                {# stretched-link makes the whole card clickable #}
+                                <a href="{{ subject.get_absolute_url }}" class="stretched-link text-decoration-none text-body">{{ subject.name }}</a>
+                            </h2>
+                            <p class="card-text small text-body-secondary mb-0">{{ subject.description|truncatewords:15|default:"No description." }}</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent small text-body-secondary">
+                        <i class="bi bi-file-earmark-text me-1"></i>{{ subject.note_count }} note{{ subject.note_count|pluralize }}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card empty-state">
+        <i class="bi bi-folder-plus"></i>
+        <p class="mb-2">You don't have any subjects yet.</p>
+        <div><a href="{% url 'subject_create' %}" class="btn btn-primary btn-sm">Create your first subject</a></div>
+    </div>
+{% endif %}
+
+{% include 'partials/pagination.html' %}
+{% endblock %}

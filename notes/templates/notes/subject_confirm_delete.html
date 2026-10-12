@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete subject · Study Notes Hub{% endblock %}
+
+{% block content %}
+    {% include 'partials/confirm_delete.html' with cancel_url=object.get_absolute_url %}
+{% endblock %}

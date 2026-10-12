@@ -1,0 +1,24 @@
+{% comment %}
+    Shared "are you sure?" page for deleting anything.
+    Expects: object (what we delete), cancel_url, and an optional
+    warning (set in the view's get_context_data).
+{% endcomment %}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-danger-subtle">
+            <div class="card-body p-4 text-center">
+                <div class="display-5 text-danger mb-2"><i class="bi bi-exclamation-triangle"></i></div>
+                <h1 class="h4">Delete “{{ object }}”?</h1>
+                {% if warning %}<p class="text-danger fw-medium mb-1">{{ warning }}</p>{% endif %}
+                <p class="text-body-secondary">This can't be undone.</p>
+                <!-- Deleting changes data, so it must be a POST with a CSRF token -->
+                <form method="post" class="d-flex justify-content-center gap-2">
+                    {% csrf_token %}
+                    <a href="{{ cancel_url }}" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Yes, delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

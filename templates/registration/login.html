@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Log in · Study Notes Hub{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="text-center mb-4">
+        <span class="icon-badge mb-3"><i class="bi bi-journal-bookmark-fill"></i></span>
+        <h1 class="h3">Welcome back</h1>
+        <p class="text-body-secondary">Log in to your study notes.</p>
+    </div>
+    <div class="card">
+        <div class="card-body p-4">
+            <form method="post">
+                {% csrf_token %}
+                {% include 'partials/form_fields.html' %}
+                <!-- Keeps the page the user was trying to reach, so they return there after login -->
+                <input type="hidden" name="next" value="{{ next }}">
+                <button type="submit" class="btn btn-primary w-100">Log in</button>
+            </form>
+        </div>
+    </div>
+    <p class="text-center mt-3 text-body-secondary">New here? <a href="{% url 'signup' %}">Create an account</a></p>
+</div>
+{% endblock %}
